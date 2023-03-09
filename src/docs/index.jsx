@@ -1,15 +1,18 @@
 import React from "react";
 import { render } from "react-dom";
-import MyComponent from "../../lib";
+// import Rbox1 from "../../lib";
+import Ggot from "../../lib/Ggot";
+import Rbox2 from '../../lib/Rbox2'
+import Rbox1 from '../../lib/Rbox1'
 import "./styles.css";
 
-function Demo() {
+function APP() {
   return (
     <div>
-      <h1>Demo with examples of the component</h1>
-      <MyComponent color="brown">Wow what a button</MyComponent>
+      <Rbox2/>
+      <Rbox1 style={{height:'220px'}}>gggggggg</Rbox1>
     </div>
   );
 }
 
-render(<Demo />, document.getElementById("app"));
+render(<APP />, document.getElementById("app"));
