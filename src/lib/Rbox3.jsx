@@ -5,7 +5,7 @@ import { deepMerge,deepClone } from './util';
 
 const defaultColor = ['#0fffc0', '#00a08b'];
 
-const Rbox1 = forwardRef(({ children, style, color = [], backgroundColor = 'transparent' }, ref) => {
+const Rbox3 = forwardRef(({ children, style, color = [], backgroundColor = 'transparent' }, ref) => {
     const { width, height, domRef } = useAutoResize(ref)
 
     const mergedColor = useMemo(() => deepMerge(deepClone(defaultColor, true), color || []), [color])
@@ -16,7 +16,7 @@ const Rbox1 = forwardRef(({ children, style, color = [], backgroundColor = 'tran
             <style >
                 {
                     `
-        .box1 {
+        .box3 {
             position: relative;
             width: 100%;
             height: 100%;
@@ -60,22 +60,26 @@ const Rbox1 = forwardRef(({ children, style, color = [], backgroundColor = 'tran
         `
                 }
             </style>
-            <div className="box1" style={style} ref={domRef}>
+            <div className="box3" style={style} ref={domRef}>
+                {width?
+                <>
                 <svg className="dev-border" width={width} height={height} >
-                    <defs>
-                        <filter id="innerShadow" height="100%" width="100%" x="0" y="0">
-                            <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blurred" />
-                        </filter>
-                    </defs>
-                    {width ?
-                        <polygon fill={backgroundColor} stroke={mergedColor[0]} strokeWidth="3" filter={"url(#innerShadow)"}
-                            points={`0,22 22, 0 ${width - 22}, 0 ${width}, 22 ${width} ,${height - 22} ${width - 22}, ${height} 22,${height} 0, ${height - 22} 0, 22`} />
-                        : <div></div>}
+                       <polygon fill={backgroundColor} stroke={mergedColor[0]} strokeWidth="2"
+                       points={`0, 0 ${width / 5 - 8}, 0 ${width / 5}, 10 ${width / 5 * 4}, 10 ${width / 5 * 4 + 8}, 0 ${width},0 ${width}, ${height} ${width / 8 * 5},${height} ${width / 8 * 5 - 8},${height - 10} ${width / 8 * 3},${height - 10} ${width / 8 * 3 - 8},${height} 0, ${height} `} />
+                   <polyline stroke={mergedColor[1]} strokeWidth="2"  fill='none'
+                       points={`${width / 5 + 2}, 0 ${width / 5 + 8}, 4 ${width / 5 * 4 - 8}, 4 ${width / 5 * 4 - 2}, 2`} />
+                   <polyline stroke={mergedColor[1]} strokeWidth="2" fill='none' strokeLinecap="round"
+                       points={`${width / 8 * 3}, ${height - 4} ${width / 8 * 5 - 8}, ${height - 4} `}/>
+                      
                 </svg>
+                </>
+                : <></>}
 
                 {border.map(borderName => (
                     <svg width="100px" height="100px" key={borderName} className={`${borderName} border`}>
-                        <polygon fill={mergedColor[0]} points="6,40 0,50 0,20 20,0 100,0 90,6 26,6 6 ,26 6,40" />
+                        <circle id="myCircle" cx="10" cy="10" r="2" fill={mergedColor[1]}></circle>
+                        <circle id="myCircle" cx="25" cy="10" r="3" fill={mergedColor[1]}></circle>
+                        <circle id="myCircle" cx="45" cy="10" r="3" fill={mergedColor[1]}></circle>
                     </svg>))}
                 <div className='slot-content'>{children}</div>
             </div>
@@ -84,10 +88,10 @@ const Rbox1 = forwardRef(({ children, style, color = [], backgroundColor = 'tran
 
 
 })
-Rbox1.propTypes = {
+Rbox3.propTypes = {
     children: PropTypes.node,
     style: PropTypes.object,
     color: PropTypes.array,
     backgroundColor: PropTypes.string
 }
-export default Rbox1;
+export default Rbox3;

@@ -1,11 +1,11 @@
 import React, { useMemo, forwardRef } from 'react';
 import PropTypes from 'prop-types'
 import useAutoResize from './autoResize';
-import { deepMerge,deepClone } from './util';
+import { deepMerge, deepClone } from './util';
 
 const defaultColor = ['#0fffc0', '#00a08b'];
 
-const Rbox1 = forwardRef(({ children, style, color = [], backgroundColor = 'transparent' }, ref) => {
+const Rline2 = forwardRef(({ children, style, color = [], backgroundColor = 'transparent' }, ref) => {
     const { width, height, domRef } = useAutoResize(ref)
 
     const mergedColor = useMemo(() => deepMerge(deepClone(defaultColor, true), color || []), [color])
@@ -16,7 +16,7 @@ const Rbox1 = forwardRef(({ children, style, color = [], backgroundColor = 'tran
             <style >
                 {
                     `
-        .box1 {
+        .line2 {
             position: relative;
             width: 100%;
             height: 100%;
@@ -60,34 +60,34 @@ const Rbox1 = forwardRef(({ children, style, color = [], backgroundColor = 'tran
         `
                 }
             </style>
-            <div className="box1" style={style} ref={domRef}>
-                <svg className="dev-border" width={width} height={height} >
-                    <defs>
-                        <filter id="innerShadow" height="100%" width="100%" x="0" y="0">
-                            <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blurred" />
-                        </filter>
-                    </defs>
-                    {width ?
-                        <polygon fill={backgroundColor} stroke={mergedColor[0]} strokeWidth="3" filter={"url(#innerShadow)"}
-                            points={`0,22 22, 0 ${width - 22}, 0 ${width}, 22 ${width} ,${height - 22} ${width - 22}, ${height} 22,${height} 0, ${height - 22} 0, 22`} />
-                        : <div></div>}
-                </svg>
+            <div className="line2" style={style} ref={domRef}>
+                {width ?
+                    <>
+                        <svg className="dev-border" width={width} height={height}>
+                        <circle id="myCircle" cx={`${height / 2 - 3}`} cy={`${height / 2}`} r="2" fill={mergedColor[1]}></circle>
+            <path stroke={mergedColor[0]} strokeWidth="3" fill="none" strokeLinecap="round"
+                strokeLinejoin="round" d={`M 6, 0 L ${height / 2 + 6},${height / 2} L 6, ${height} `} />
 
-                {border.map(borderName => (
-                    <svg width="100px" height="100px" key={borderName} className={`${borderName} border`}>
-                        <polygon fill={mergedColor[0]} points="6,40 0,50 0,20 20,0 100,0 90,6 26,6 6 ,26 6,40" />
-                    </svg>))}
+            <circle id="myCircle" cx={`${width - height / 2 + 3}`} cy={`${height / 2}`} r="2" fill={mergedColor[1]}>
+            </circle>
+            <path stroke={mergedColor[0]} strokeWidth="3" fill="none" strokeLinecap="round"
+                strokeLinejoin="round"
+                d={`M ${width - 6}, 0 L ${width - height / 2 - 6},${height / 2} L ${width - 6},${height} `}/>
+                        </svg>
+
+                    </>
+                    : <></>}
                 <div className='slot-content'>{children}</div>
-            </div>
+            </div >
         </>
     )
 
 
 })
-Rbox1.propTypes = {
+Rline2.propTypes = {
     children: PropTypes.node,
     style: PropTypes.object,
     color: PropTypes.array,
     backgroundColor: PropTypes.string
 }
-export default Rbox1;
+export default Rline2;
